@@ -42,7 +42,7 @@ module Strainer
           if options[:fail_fast] && !success
             Strainer.ui.debug "Run was not successful and --fail-fast was specified"
             Strainer.ui.fatal "Exited early because '--fail-fast' was specified. Some tests may have been skipped!"
-            abort
+            return false
           end
         end
       end
@@ -50,7 +50,7 @@ module Strainer
       # Move the logfile back over
       FileUtils.mv(Strainer.logfile_path, Strainer.sandbox_path.join('strainer.out'))
 
-      abort unless @report.values.collect(&:values).flatten.all?
+      @report.values.collect(&:values).flatten.all?
     end
 
     def hash
